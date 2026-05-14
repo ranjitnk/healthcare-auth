@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthauth-api
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: healthauth-api
+
+  template:
+    metadata:
+      labels:
+        app: healthauth-api
+
+    spec:
+      containers:
+      - name: api
+        image: healthauth/api:latest
+        ports:
+        - containerPort: 8000

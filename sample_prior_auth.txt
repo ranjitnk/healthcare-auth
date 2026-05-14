@@ -1,0 +1,17 @@
+PATIENT INFORMATION
+-------------------
+Patient Name: Johnathan Doe
+Date of Birth: 05/12/1985
+Insurance ID: ABC-987654321
+Provider: Northshore Medical Group
+
+PROCEDURE DETAILS
+-----------------
+Procedure: MRI Lumbar Spine
+Diagnosis: Chronic Lower Back Pain
+ICD-10 Code: M54.50
+Clinical Urgency: Routine
+
+NOTES
+-----
+Patient has failed 6 weeks of physical therapy.
