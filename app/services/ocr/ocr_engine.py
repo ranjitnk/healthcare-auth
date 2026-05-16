@@ -1,7 +1,10 @@
 def extract_text(file_path: str):
 
-    return '''
-    Patient Name: John Doe
-    Insurance ID: INS1001
-    Procedure: MRI Scan
-    '''
+    try:
+        with open(file_path, "r") as f:
+            text = f.read()
+
+        return text
+
+    except FileNotFoundError:
+        return "File not found"

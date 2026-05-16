@@ -7,7 +7,9 @@ class PriorAuthorization(Base):
 
     __tablename__ = "prior_authorizations"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
     patient_name = Column(String)
     insurance_id = Column(String)
+    procedure = Column(String)
+    
     status = Column(String)

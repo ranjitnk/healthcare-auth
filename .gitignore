@@ -1,13 +1,22 @@
-# Secrets and environment variables
+# === Environment Secrets ===
 .env
+.env.[a-zA-Z]*
+!.env.example
+
+# === Python / Virtual Environments ===
+venv/
+.venv/
+env/
+ENV/
+*.pyc
+__pycache__/
+.pytest_cache/
+
+# === App Specific Media & Uploads ===
+uploads/
+temp_*
 *.log
 
-# Python files
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-
-# OS files
+# === OS Files ===
 .DS_Store
 Thumbs.db

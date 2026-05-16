@@ -1,6 +1,10 @@
-def run_ocr(filename):
+def run_ocr(filename: str):
 
-    with open(filename, "r") as f:
-        text = f.read()
+    try:
+        with open(filename, "r") as f:
+            text = f.read()
 
-    return text
+        return text
+
+    except FileNotFoundError:
+        return "File not found"

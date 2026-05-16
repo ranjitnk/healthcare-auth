@@ -1,0 +1,14 @@
+from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, Integer, String
+
+Base = declarative_base()
+
+class AuditLog(Base):
+
+    __tablename__ = "audit_logs"
+
+    id = Column(Integer, primary_key=True)
+
+    action = Column(String)
+    patient_name = Column(String)
+    status = Column(String)

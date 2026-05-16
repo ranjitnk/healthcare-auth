@@ -1,13 +1,25 @@
-from fastapi import APIRouter, UploadFile
-from app.services.intake.document_processor import process_document
+from fastapi import APIRouter, UploadFile, File
+from app.services.pipeline import process_pipeline
+import shutil
+import os
 
 router = APIRouter(prefix="/intake", tags=["Intake"])
 
 @router.post("/document")
-async def upload_document(file: UploadFile):
-    result = process_document(file.filename)
+async def intake_document(file: UploadFile = File(...)):
 
-    return {
-        "status": "processed",
-        "data": result
-    }
+    temp_path = f"temp_{file.filename}"
+
+    with open(temp_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    try:
+
+        result = process_pipeline(temp_path)
+
+    finally:
+
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+    return result
