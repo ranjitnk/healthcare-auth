@@ -1,23 +1,24 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: healthauth-api
+env:
+- name: DATABASE_URL
+  valueFrom:
+    secretKeyRef:
+      name: healthauth-db-secrets
+      key: database-url
 
-spec:
-  replicas: 2
+- name: REDIS_URL
+  value: "redis://healthauth-redis-service:6379/0"
 
-  selector:
-    matchLabels:
-      app: healthauth-api
+- name: JWT_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+      name: healthauth-jwt-secrets
+      key: secret-key
 
-  template:
-    metadata:
-      labels:
-        app: healthauth-api
+- name: OPENAI_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: healthauth-openai-secrets
+      key: openai-api-key
 
-    spec:
-      containers:
-      - name: api
-        image: healthauth/api:latest
-        ports:
-        - containerPort: 8000
+- name: ENV
+  value: "PROD"
