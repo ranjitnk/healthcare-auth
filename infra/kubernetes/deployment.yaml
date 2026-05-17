@@ -1,24 +1,97 @@
-env:
-- name: DATABASE_URL
-  valueFrom:
-    secretKeyRef:
-      name: healthauth-db-secrets
-      key: database-url
+apiVersion: apps/v1
+kind: Deployment
 
-- name: REDIS_URL
-  value: "redis://healthauth-redis-service:6379/0"
+metadata:
+  name: healthauth-api
+  namespace: default
 
-- name: JWT_SECRET_KEY
-  valueFrom:
-    secretKeyRef:
-      name: healthauth-jwt-secrets
-      key: secret-key
+  labels:
+    app: healthauth-api
+    tier: backend
 
-- name: OPENAI_API_KEY
-  valueFrom:
-    secretKeyRef:
-      name: healthauth-openai-secrets
-      key: openai-api-key
+spec:
+  replicas: 2
 
-- name: ENV
-  value: "PROD"
+  strategy:
+    type: RollingUpdate
+
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
+  selector:
+    matchLabels:
+      app: healthauth-api
+
+  template:
+    metadata:
+      labels:
+        app: healthauth-api
+        tier: backend
+
+    spec:
+      containers:
+
+      - name: api
+
+        image: healthauth/api:latest
+        imagePullPolicy: IfNotPresent
+
+        ports:
+        - containerPort: 8000
+          name: http
+
+        env:
+
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: healthauth-db-secrets
+              key: database-url
+
+        - name: REDIS_URL
+          value: "redis://healthauth-redis-service:6379/0"
+
+        - name: JWT_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: healthauth-jwt-secrets
+              key: secret-key
+
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: healthauth-openai-secrets
+              key: openai-api-key
+
+        - name: ENV
+          value: "PROD"
+
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+
+          initialDelaySeconds: 15
+          periodSeconds: 20
+
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+
+          initialDelaySeconds: 10
+          periodSeconds: 10
