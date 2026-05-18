@@ -25,7 +25,11 @@ An enterprise-ready, high-throughput automation framework built to streamline cl
 
 ## 🏁 Getting Started
 
-To spin up the local development environment containing the full FastAPI application and database layers, run:
+See detailed installation and execution guide:
+
+- [instructions.md](./instructions.md)
+
+Quick Start:
 
 ```bash
 docker-compose up --build
