@@ -253,7 +253,7 @@ HealthAuthAI_Enterprise_v2/
 Detailed installation and execution instructions are available in:
 
 ```text
-instructions.md
+[instructions.md](instructions.md)
 ```
 
 Quick Start:
