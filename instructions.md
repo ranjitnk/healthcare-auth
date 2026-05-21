@@ -43,7 +43,6 @@ source venv/bin/activate
 
 # 4. Install Dependencies
 
-```markdown
 ## 📚 Install Dependencies
 
 ```bash
@@ -56,7 +55,7 @@ pip install -r requirements.txt
 
 Create a `.env` file in the project root.
 
-```markdown
+
 ## ⚙️ Configure Environment Variables
 
 Create a `.env` file in project root:
@@ -79,7 +78,7 @@ OPENAI_API_KEY=
 
 # 6. Start Docker Services
 
-```markdown
+
 ## 🐳 Start Infrastructure Services
 
 Run PostgreSQL and Redis:
@@ -102,7 +101,7 @@ python create_tables.py
 
 # 8. Start FastAPI
 
-```markdown
+
 ## 🚀 Run FastAPI Application
 
 ```bash
@@ -113,7 +112,7 @@ uvicorn main:app --reload
 
 # 9. Open Swagger
 
-```markdown
+
 ## 📄 Swagger API Documentation
 
 Open:
@@ -139,7 +138,7 @@ Procedure: CT Scan
 
 # 11. Verify Dashboard
 
-```markdown
+
 ## 📊 Dashboard Metrics API
 
 Use:
@@ -165,7 +164,7 @@ SELECT * FROM audit_logs;
 
 VERY enterprise-looking.
 
-```markdown
+
 ## 🔌 Available APIs
 
 | Endpoint | Description |
@@ -203,7 +202,7 @@ PostgreSQL Persistence
 
 VERY important for healthcare credibility.
 
-```markdown
+
 ## 🔒 HIPAA-Oriented Security Features
 
 - JWT Authentication
