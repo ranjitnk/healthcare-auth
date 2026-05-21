@@ -1,21 +1,13 @@
-# HealthAuthAI Enterprise Framework
-## Installation & Execution Guide
+## 🏁 Getting Started
+## 📦 Prerequisites
 
-> Enterprise setup and execution guide for the Healthcare Agentic AI Prior Authorization Platform powered by FastAPI, LangGraph, ChromaDB, PostgreSQL, GPT-4o, and UiPath integration architecture.
+Install the following before setup:
 
----
-
-# 1. Prerequisites
-
-Install the following software before starting setup.
-
-| Component | Version |
-|---|---|
-| Python | 3.10+ |
-| Docker Desktop | Latest |
-| PostgreSQL | Optional if using Docker |
-| VS Code | Latest |
-| Git | Latest |
+- Python 3.10+
+- Docker Desktop
+- PostgreSQL (optional if using Docker)
+- VS Code
+- Git
 
 Optional tools:
 
@@ -26,7 +18,7 @@ Optional tools:
 
 ---
 
-# 2. Clone Repository
+## 📥 Clone Repository
 
 ```bash
 git clone https://github.com/your-repo/healthauthai-enterprise.git
@@ -36,19 +28,14 @@ cd healthauthai-enterprise
 
 ---
 
-# 3. Create Python Virtual Environment
+# 3. Create Virtual Environment
 
 ## Windows
 
 ```bash
 python -m venv venv
+
 venv\Scripts\activate
-```
-
-## Linux / Mac
-
-```bash
-python3 -m venv venv
 source venv/bin/activate
 ```
 
@@ -56,23 +43,23 @@ source venv/bin/activate
 
 # 4. Install Dependencies
 
+```markdown
+## 📚 Install Dependencies
+
 ```bash
 pip install -r requirements.txt
-```
 
-Additional enterprise AI packages used:
-
-```bash
-pip install langgraph chromadb pypdf openai python-dotenv
-```
 
 ---
 
-# 5. Configure Environment Variables
+# ⚙️ Configure Environment Variables
 
 Create a `.env` file in the project root.
 
-## Local Development Example
+```markdown
+## ⚙️ Configure Environment Variables
+
+Create a `.env` file in project root:
 
 ```env
 ENV=DEV
@@ -85,250 +72,110 @@ DB_NAME=healthauth
 DB_USER=admin
 DB_PASSWORD=password
 
-GITHUB_TOKEN=your_github_models_token
-```
+OPENAI_API_KEY=
+
 
 ---
 
-# 6. GitHub Models GPT-4o Integration
+# 6. Start Docker Services
 
-The platform uses GitHub Models GPT-4o integration for enterprise AI reasoning.
+```markdown
+## 🐳 Start Infrastructure Services
 
-Generate a GitHub Personal Access Token and configure:
-
-```env
-GITHUB_TOKEN=your_token_here
-```
-
-The AI client uses:
-
-```python
-base_url="https://models.inference.ai.azure.com"
-```
-
----
-
-# 7. Start Docker Infrastructure
-
-Run PostgreSQL and Redis services.
+Run PostgreSQL and Redis:
 
 ```bash
 docker-compose up -d
-```
 
-Verify containers:
-
-```bash
-docker ps
-```
-
-Expected containers:
-
-- postgres
-- redis
-- api
 
 ---
 
-# 8. Initialize Database Tables
+# 7. Create Database Tables
 
 Run:
 
 ```bash
 python create_tables.py
-```
 
-This creates:
-
-- prior authorization tables
-- audit logging tables
-- agentic triage persistence tables
 
 ---
 
-# 9. Start FastAPI Application
+# 8. Start FastAPI
 
-```bash
-uvicorn main:app
-```
-
-For development mode:
+```markdown
+## 🚀 Run FastAPI Application
 
 ```bash
 uvicorn main:app --reload
-```
+
 
 ---
 
-# 10. Open Swagger Documentation
+# 9. Open Swagger
+
+```markdown
+## 📄 Swagger API Documentation
 
 Open:
 
-```text
 http://127.0.0.1:8000/docs
-```
 
-Swagger provides:
+## 🧪 Test Prior Authorization Flow
 
-- API testing
-- request payload validation
-- endpoint documentation
-- live execution testing
+1. Open Swagger UI
+2. Use:
 
----
+POST /intake/document
 
-# 11. Enterprise Agentic Workflow Test
+3. Upload sample file:
 
-## Endpoint
+```txt
+Patient Name: Alice Johnson
+Insurance ID: INS7777
+Procedure: CT Scan
 
-```text
-POST /agentic/prior-auth
-```
-
-## Example Payload
-
-```json
-{
-  "claim_text": "Patient Name: John Doe\nInsurance ID: INS9000\nProcedure: Knee Replacement\nDiagnosis: Severe Knee Osteoarthritis"
-}
-```
-
-## Expected Response
-
-```json
-{
-  "request_id": "86f0bb7f-4dbf-4058-b820-49d14fc1df15",
-  "patient_name": "John Doe",
-  "recommendation": "APPROVED",
-  "compliance_score": 95,
-  "missing_items": [],
-  "reasoning_summary": [
-    "Insurance validated successfully",
-    "Diagnosis documentation provided",
-    "Policy requirements satisfied"
-  ]
-}
-```
 
 ---
 
-# 12. Dynamic Policy Ingestion
+# 11. Verify Dashboard
 
-Insurance policy files are dynamically loaded from:
+```markdown
+## 📊 Dashboard Metrics API
 
-```text
-data/policies/
-```
+Use:
 
-Supported formats:
+GET /dashboard/metrics
 
-- TXT
-- PDF
+## 🗄️ Verify Database Persistence
 
-Current supported specialties:
-
-- orthopedic
-- cardiology
-
-Example policy files:
-
-```text
-orthopedic_policy.txt
-cardiology_policy.txt
-```
-
----
-
-# 13. ChromaDB Vector Persistence
-
-The enterprise RAG pipeline uses ChromaDB for:
-
-- semantic retrieval
-- metadata-aware filtering
-- policy vector indexing
-- specialty-based routing
-
-If policy documents change:
-
-Delete:
-
-```text
-chroma_db/
-```
-
-Then restart application.
-
----
-
-# 14. Metadata-Aware Retrieval
-
-The platform supports specialty-aware policy routing.
-
-Examples:
-
-| Procedure | Specialty Retrieval |
-|---|---|
-| Knee Replacement | Orthopedic |
-| Cardiac Catheterization | Cardiology |
-
-This improves:
-
-- retrieval precision
-- hallucination reduction
-- clinical relevance
-
----
-
-# 15. Verify Dashboard Analytics
-
-## Endpoint
-
-```text
-GET /agentic/dashboard
-```
-
-Dashboard metrics include:
-
-- approval counts
-- compliance scores
-- authorization trends
-- request processing metrics
-
----
-
-# 16. Verify PostgreSQL Persistence
-
-Connect to PostgreSQL container:
+Connect to PostgreSQL:
 
 ```bash
 docker exec -it <container_name> psql -U admin -d healthauth
-```
-
-Example queries:
 
 ```sql
 SELECT * FROM prior_authorizations;
 
 SELECT * FROM audit_logs;
 
-SELECT * FROM agentic_triage;
-```
 
 ---
 
-# 17. Available API Endpoints
+# 13. Supported APIs
+
+VERY enterprise-looking.
+
+```markdown
+## 🔌 Available APIs
 
 | Endpoint | Description |
 |---|---|
-| GET /health | Health probe endpoint |
-| POST /agentic/prior-auth | Executes full Agentic AI workflow |
-| GET /agentic/dashboard | Dashboard analytics |
-| POST /intake/document | Upload healthcare intake document |
-| POST /auth/login | Authentication endpoint |
+| GET /health | Health check |
+| POST /intake/document | Upload prior auth document |
+| GET /dashboard/metrics | Dashboard metrics |
+| GET /prior-auth/history | Prior auth history |
 
----
-
-# 18. Enterprise Architecture Workflow
+## 🏗️ Enterprise Workflow Architecture
 
 ```text
 Healthcare Intake
@@ -348,173 +195,43 @@ GPT Validation Agent
 Decision Agent
         ↓
 PostgreSQL Persistence
-        ↓
-Dashboard Analytics
-        ↓
-Legacy System Writeback
-```
+
 
 ---
 
-# 19. LangGraph Multi-Agent Workflow
+# 15. HIPAA Compliance Features
 
-Implemented AI agents:
+VERY important for healthcare credibility.
 
-| Agent | Responsibility |
-|---|---|
-| Extraction Agent | Extracts healthcare entities |
-| Policy Agent | Retrieves relevant policy documents |
-| Validation Agent | Executes GPT-powered reasoning |
-| Decision Agent | Generates authorization recommendation |
+```markdown
+## 🔒 HIPAA-Oriented Security Features
 
----
+- JWT Authentication
+- Audit Logging
+- PHI-aware architecture
+- Request Traceability
+- Role-Based Access Control (RBAC)
+- Kubernetes Secrets Management
+- Secure Environment Variables
 
-# 20. UiPath Integration Architecture
+## 🤖 UiPath Integration Architecture
 
-The architecture supports enterprise UiPath integration.
+UiPath Dispatcher:
+- Reads healthcare intake emails
+- Downloads attachments
+- Creates Orchestrator queue items
 
-## Dispatcher Workflow
+UiPath Performer:
+- Calls FastAPI APIs
+- Processes prior authorization workflows
+- Handles retries and exception routing
 
-UiPath Dispatcher can:
+## 🚧 Planned Enhancements
 
-- monitor healthcare inboxes
-- download attachments
-- capture intake requests
-- create queue items
-
-## Performer Workflow
-
-UiPath Performer can:
-
-- invoke FastAPI endpoints
-- receive AI decisions
-- update SAP/EHR systems
-- send notifications
-- perform retry handling
-
----
-
-# 21. Docker & Kubernetes Support
-
-Current support:
-
-- Docker Compose
-- Containerized PostgreSQL
-- Redis infrastructure
-- Health probe endpoints
-
-Planned enterprise enhancements:
-
-- AKS deployment
-- Kubernetes autoscaling
-- secrets management
-- production ingress routing
-
----
-
-# 22. HIPAA-Oriented Security Features
-
-Implemented and planned enterprise healthcare security capabilities include:
-
-- JWT authentication
-- audit logging
-- PHI-aware workflow design
-- request traceability
-- metadata persistence
-- environment variable protection
-- containerized infrastructure
-
-Planned enhancements:
-
-- RBAC expansion
-- enterprise IAM integration
-- OAuth2 support
-- encryption enhancements
-
----
-
-# 23. Common Troubleshooting
-
-## Chroma Retrieval Empty
-
-Delete:
-
-```text
-chroma_db/
-```
-
-Restart server.
-
----
-
-## PostgreSQL Connection Refused
-
-Ensure Docker containers are running:
-
-```bash
-docker ps
-```
-
-Verify `.env` values:
-
-```env
-DB_HOST=postgres
-```
-
----
-
-## GitHub GPT Authentication Error
-
-Ensure:
-
-```env
-GITHUB_TOKEN=your_valid_token
-```
-
-Verify AI client uses:
-
-```python
-base_url="https://models.inference.ai.azure.com"
-```
-
----
-
-## Module Import Errors
-
-Run from project root:
-
-```bash
-python -m tests.test_langgraph
-```
-
-NOT:
-
-```bash
-python tests/test_langgraph.py
-```
-
----
-
-# 24. Planned Enterprise Enhancements
-
-Future roadmap items include:
-
-- OCR pipelines
-- real-time graph visualization
-- Epic/FHIR integration
-- SMTP notification engine
-- distributed observability
-- Streamlit/React dashboard UI
-- advanced RAG chunking
-- parent-child retrieval
-- Celery async workers
-- enterprise deployment automation
-
----
-
-# 25. Disclaimer
-
-This repository currently represents a validated enterprise prototype architecture and healthcare AI demonstration platform.
-
-Some described components remain architectural roadmap enhancements and may not yet represent fully production-deployed implementations.
-
+- Azure OCR
+- OpenAI Structured Extraction
+- LangGraph Agents
+- Epic/FHIR Integration
+- Celery Async Workers
+- AKS Deployment
+- Streamlit Dashboard
