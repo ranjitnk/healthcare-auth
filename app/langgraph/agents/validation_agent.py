@@ -1,29 +1,69 @@
+from app.services.llm.openai_client import client
+
 def validation_agent(state):
 
     entities = state["extracted_entities"]
 
     policy = state["retrieved_policy"]
 
-    missing = []
+    prompt = f"""
+    You are a healthcare insurance validation AI.
 
-    if not entities.get("insurance_id"):
-        missing.append("insurance_id")
+    Validate this healthcare claim.
 
-    if "diagnosis" not in policy.lower():
-        missing.append("diagnosis")
+    Claim Entities:
+    {entities}
 
-    compliance_score = 100 - (len(missing) * 30)
+    Insurance Policy:
+    {policy}
 
-    result = {
-        "missing_items": missing,
-        "compliance_score": compliance_score
-    }
+    Determine:
+
+    1. Missing information
+    2. Compliance score (0-100)
+    3. Recommendation:
+       - APPROVED
+       - REQUEST_INFO
+       - DENIED
+
+    Return concise reasoning.
+    """
+    print("VALIDATION CLIENT:", client.base_url)
+    response = client.chat.completions.create(
+
+        model="gpt-4o",
+
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a healthcare prior authorization validation agent."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+
+        temperature=0.2
+    )
+
+    ai_reasoning = response.choices[0].message.content
 
     logs = state.get("reasoning_logs", [])
 
     logs.append(
-        f"[Validation Agent] Compliance score: {compliance_score}"
+        "[Validation Agent] GPT validation completed"
     )
+
+    # Temporary structured output
+    result = {
+
+        "missing_items": [],
+
+        "compliance_score": 95,
+
+        "ai_reasoning": ai_reasoning
+    }
 
     state["validation_result"] = result
 

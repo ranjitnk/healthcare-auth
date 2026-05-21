@@ -2,8 +2,6 @@
 .env
 .env.[a-zA-Z]*
 !.env.example
-
-# === Python / Virtual Environments ===
 venv/
 .venv/
 env/
@@ -20,3 +18,27 @@ temp_*
 # === OS Files ===
 .DS_Store
 Thumbs.db
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Python Caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local Vector Store Data & Databases
+chroma_db/
+*.db
+*.sqlite3
+
+# Environment Configurations (Credentials)
+.env
+auth_tokens.txt
+
+# IDE Settings
+.vscode/
+.idea/

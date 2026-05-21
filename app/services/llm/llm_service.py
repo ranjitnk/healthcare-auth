@@ -5,7 +5,8 @@ def extract_entities(text: str):
     patterns = {
         "patient_name": r"Patient Name:\s*(.*)",
         "insurance_id": r"Insurance ID:\s*(.*)",
-        "procedure": r"Procedure:\s*(.*)"
+        "procedure": r"Procedure:\s*(.*)",
+        "diagnosis": r"Diagnosis:\s*(.*)"
     }
 
     extracted = {}

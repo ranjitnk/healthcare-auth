@@ -1,12 +1,42 @@
 from app.langgraph.rag.vector_store import collection
 
-def retrieve_policy(query):
+def retrieve_policy(procedure, diagnosis=""):
+
+    search_query = f"""
+    Medical procedure:
+    {procedure}
+
+    Diagnosis:
+    {diagnosis}
+
+    Prior authorization requirements
+    """
+
+    specialty = "general"
+
+    if "knee" in procedure.lower():
+        specialty = "orthopedic"
+
+    elif "heart" in procedure.lower():
+        specialty = "cardiology"
 
     results = collection.query(
-        query_texts=[query],
-        n_results=1
+
+        query_texts=[search_query],
+
+        n_results=2,
+
+        where={
+            "specialty": specialty
+        }
     )
 
-    documents = results["documents"][0]
+    print("CHROMA RESULTS:", results)
 
-    return documents[0] if documents else ""
+    documents = results.get("documents", [[]])
+
+    if documents and documents[0]:
+
+        return "\n".join(documents[0])
+
+    return "No matching policy found."

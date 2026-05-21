@@ -2,20 +2,24 @@ from app.langgraph.rag.retriever import retrieve_policy
 
 def policy_agent(state):
 
-    procedure = state["extracted_entities"].get(
-        "procedure",
-        ""
+    entities = state["extracted_entities"]
+
+    procedure = entities.get("procedure", "")
+
+    diagnosis = entities.get("diagnosis", "")
+
+    policy = retrieve_policy(
+        procedure,
+        diagnosis
     )
 
-    policy = retrieve_policy(procedure)
+    state["retrieved_policy"] = policy
 
     logs = state.get("reasoning_logs", [])
 
     logs.append(
         f"[Policy Agent] Retrieved policy for procedure: {procedure}"
     )
-
-    state["retrieved_policy"] = policy
 
     state["reasoning_logs"] = logs
 
